@@ -1,4 +1,3 @@
-# sin_reco_true_final.py (1時間ごとのファイル分割機能を無効化したバージョン)
 # -*- coding: utf:8 -*-
 import os
 import sys
@@ -17,7 +16,6 @@ except Exception as e:
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [CRITICAL] カメラライブラリのインポート中にエラー: {e}")
 
 OUTPUT_DIR_BASE = "/media/c1/FCB7-43FD1/録画データ"
-# CHUNK_SECONDS = 3600 # 分割機能は使わないが、念のため残しておく
 DEFAULT_PREVIEW_WIDTH = 800
 
 quit_program = False
@@ -184,9 +182,7 @@ def main():
         rec_end_dt = rec_start_dt + timedelta(seconds=total_duration_sec)
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [INFO] カメラ起動。録画を開始します。")
 
-        # === ここから1時間ごとの分割機能を無効化するための修正 ===
         
-        # 1. ファイル作成とVideoWriterの準備をループの前に一度だけ実行
         filename = create_filename(OUTPUT_DIR_BASE)
         if not filename:
             raise Exception("ファイル名の作成に失敗しました。") # エラーを発生させて終了
@@ -197,7 +193,7 @@ def main():
 
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [INFO] 録画開始: {os.path.basename(filename)}")
         
-        # 2. メインループを一つにまとめる
+
         last_ideal_time = time.monotonic()
         while datetime.now() < rec_end_dt and not quit_program:
             request = cam.capture_request()
@@ -246,11 +242,10 @@ def main():
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [CRITICAL] メイン処理で予期せぬエラー: {e}")
 
     finally:
-        # === 最終クリーンアップ処理 ===
-        # 3. 録画ファイルを一度だけ閉じる
+
+        
         if out and out.isOpened():
             out.release()
-            # filenameがNoneでないことを確認してから表示
             if filename:
                 print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [INFO] 録画ファイルを正常にクローズ: {os.path.basename(filename)}")
         
