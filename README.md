@@ -1,2 +1,28 @@
-# recorder
-A Python script for recording video from a Raspberry Pi Camera.
+# Raspberry Pi 録画スクリプト
+
+## 概要
+
+これは、Raspberry Piカメラモジュールを使用して、指定した時間・解像度・フレームレートでビデオを録画するためのPythonスクリプトです。
+
+## 主な機能
+
+* **柔軟な録画設定**: 録画時間（ミリ秒）、FPS、解像度（HD/QHD）をコマンドライン引数で指定可能。
+* **リアルタイムプレビュー**: 録画中に2種類のプレビュー（通常・グリッド付き）を表示・非表示に切り替え可能。
+* **安定したファイル保存**: 録画日時を基にしたディレクトリとファイル名を自動で生成し、重複しないように保存します。
+* **堅牢なエラーハンドリング**: カメラの接続エラーやディレクトリの書き込み権限などをチェックし、問題を通知します。
+
+## 動作環境
+
+* **ハードウェア**: Raspberry Pi (4, 5など) + Camera Module 2/3
+* **OS**: Raspberry Pi OS
+* **Pythonライブラリ**:
+    * `picamera2`
+    * `opencv-python`
+    * `numpy`
+
+## 使い方
+
+以下のコマンドでスクリプトを実行します。
+
+```bash
+python reco1.py <継続時間(ms)> <fps> <録画サイズ(hd/qhd)> <プレビュー(on/off)>
